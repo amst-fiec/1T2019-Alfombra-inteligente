@@ -43,6 +43,8 @@ public class redes_sensores extends AppCompatActivity {
 
 
     public void HttpPost(View v) throws  JSONException {
+
+        final TextView tempValue = (TextView) findViewById(R.id.tempVal);
         String url_temp = "https://amstdb.herokuapp.com/db/logUno/1";
         JSONObject jsonObject = new JSONObject();
         final TextView nueva_temp = (TextView)findViewById(R.id.txt_nueva_temperatura);
@@ -60,7 +62,7 @@ public class redes_sensores extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         System.out.println(response);
                         try {
-                            nueva_temp.setText(response.getString("value"));
+                            tempValue.setText(response.getString("value"));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
