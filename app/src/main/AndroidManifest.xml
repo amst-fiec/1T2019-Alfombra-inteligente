@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".menu" />
-        <activity android:name=".redes_sensores"></activity>
+        <activity android:name=".redes_sensores" />
+        <activity android:name=".EstadoTanque"></activity>
     </application>
 
 </manifest>
