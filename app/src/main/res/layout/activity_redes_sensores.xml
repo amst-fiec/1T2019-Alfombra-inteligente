@@ -35,6 +35,9 @@
                 android:textSize="20sp" />
 
             <TextView
+                android:layout_gravity="center"
+                android:layout_margin="@android:dimen/app_icon_size"
+                android:layout_marginRight="@android:dimen/thumbnail_height"
                 android:id="@+id/tempVal"
                 android:layout_width="105dp"
                 android:layout_height="wrap_content"
@@ -68,7 +71,7 @@
             <TextView
                 android:id="@+id/humedadVal"
                 android:layout_width="47dp"
-                android:layout_height="53dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
                 android:text=""
@@ -100,7 +103,7 @@
             <TextView
                 android:id="@+id/pesoVal"
                 android:layout_width="wrap_content"
-                android:layout_height="51dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical|center_horizontal"
                 android:text=""

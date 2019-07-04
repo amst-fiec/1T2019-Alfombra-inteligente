@@ -22,11 +22,14 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private RequestQueue mQueue;
     private String token = null;
+    dbAdapter helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mQueue = Volley.newRequestQueue(this);
+        this.deleteDatabase("db");
+        helper = new dbAdapter(this);
     }
     public void irMenuPrincipal(View v){
         final EditText usuario = (EditText) findViewById(R.id.tx_usuario);
@@ -51,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
                             token = response.getString("token");
                             Intent menuPrincipal = new
                                     Intent(getBaseContext(), menu.class);
-                            menuPrincipal.putExtra("token", token);
+                            long id = helper.insertData(token);
+                            //System.out.println(id + "RESULTADO DE ANADIIIIIIIIIIIIIIIIIIIIIIIR");
+                            //menuPrincipal.putExtra("token", token);
                             startActivity(menuPrincipal);
                         } catch (Exception e) {
                             e.printStackTrace();
