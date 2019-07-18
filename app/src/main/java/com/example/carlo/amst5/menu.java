@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -29,10 +30,10 @@ public class menu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        //Intent login = getIntent();
+        Intent login = getIntent();
         helper = new dbAdapter(this);
 
-        //this.token = (String) login.getExtras().get("token");
+        this.token = (String) login.getExtras().get("token");
         this.token = viewdata();
         mQueue = Volley.newRequestQueue(this);
         presentar_estado_bateria();
@@ -60,16 +61,21 @@ public class menu extends AppCompatActivity {
     public void presentar_estado_bateria(int porcentaje, boolean status_charging) {
         ImageView bateria = (ImageView) findViewById(R.id.Battery_View);
         if (status_charging) {
-            bateria.setImageResource(R.drawable.charging);
+            bateria.setImageResource(R.drawable.bateria_charging);
         } else {
-            if (porcentaje >= 90) {
-                bateria.setImageResource(R.drawable.full);
-            } else if (porcentaje >= 45 & porcentaje < 90) {
-                bateria.setImageResource(R.drawable.middle);
-            } else if (porcentaje >= 10 & porcentaje < 45) {
-                bateria.setImageResource(R.drawable.low);
-            } else {
-                bateria.setImageResource(R.drawable.vacio);
+            if (porcentaje >=85) {
+                bateria.setImageResource(R.drawable.bateria_full);
+            } else if (porcentaje >= 70 & porcentaje < 85) {
+                bateria.setImageResource(R.drawable.bateria_super_high);
+            } else if (porcentaje >= 55 & porcentaje < 70) {
+                bateria.setImageResource(R.drawable.bateria_high);
+            } else if (porcentaje >= 40 & porcentaje < 55) {
+                bateria.setImageResource(R.drawable.bateria_medium);
+            } else if (porcentaje >= 35 & porcentaje < 40){
+                bateria.setImageResource(R.drawable.bateria_low);
+            }else if (porcentaje >= 20 & porcentaje < 35){
+                bateria.setImageResource(R.drawable.bateria_super_low);
+                Toast.makeText(this,"Bateria por agotarse. Por favor coloque una nueva",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -111,7 +117,7 @@ public class menu extends AppCompatActivity {
     public void revisarEstadoTanque(View v) {
         Intent estado_tanque = new Intent(getBaseContext(),
                 EstadoTanque.class);
-        //estado_tanque.putExtra("token", token);
+        estado_tanque.putExtra("token", token);
         startActivity(estado_tanque);
     }
 }

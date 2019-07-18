@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                                     Intent(getBaseContext(), menu.class);
                             long id = helper.insertData(token);
                             //System.out.println(id + "RESULTADO DE ANADIIIIIIIIIIIIIIIIIIIIIIIR");
-                            //menuPrincipal.putExtra("token", token);
+                            menuPrincipal.putExtra("token", token);
                             startActivity(menuPrincipal);
                         } catch (Exception e) {
                             e.printStackTrace();
