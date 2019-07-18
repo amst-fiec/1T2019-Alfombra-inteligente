@@ -120,4 +120,11 @@ public class menu extends AppCompatActivity {
         estado_tanque.putExtra("token", token);
         startActivity(estado_tanque);
     }
+
+    public void ver_estadisticas(View v) {
+        Intent ventana = new Intent(getBaseContext(),
+                Estadisticas.class);
+        ventana.putExtra("token", token);
+        startActivity(ventana);
+    }
 }

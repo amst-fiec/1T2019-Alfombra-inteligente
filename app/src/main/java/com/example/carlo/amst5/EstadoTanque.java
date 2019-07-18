@@ -1,5 +1,6 @@
 package com.example.carlo.amst5;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -8,8 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -17,7 +16,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -31,7 +29,8 @@ public class EstadoTanque extends AppCompatActivity {
 
     private RequestQueue mQueue;
     private String token = "";
-    public ArrayList<Category> hp = new ArrayList<Category>();
+    private Activity actividad = this;
+    //private ArrayList<Category> hp = new ArrayList<Category>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +40,11 @@ public class EstadoTanque extends AppCompatActivity {
         Intent login = getIntent();
         this.token = (String)login.getExtras().get("token");
 
-        ListView lv = (ListView) findViewById(R.id.listView);
         Obtener_estado_de_tanques();
-        System.out.println("DESPUESSSSSS"+hp.isEmpty());
-        AdapterItem adapter = new AdapterItem(this, hp);
+        /*ListView lv = (ListView) findViewById(R.id.listView);
+
+
+        AdapterItem adapter = new AdapterItem(this,);
 
         lv.setAdapter(adapter);
 
@@ -55,7 +55,7 @@ public class EstadoTanque extends AppCompatActivity {
                 //Intent tanque = new Intent(getBaseContext(),Tanque.class);
                 //startActivity(tanque); //AQUI ALGO COMO PUT EXTRAS PARA PASAR INFO DE QUE TANQUE SE REQUIERE PARAMETROS
             }
-        });
+        });*/
 
     }
 
@@ -73,7 +73,7 @@ public class EstadoTanque extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
 
                         try {
-
+                            ArrayList<Category> lista_tanques= new ArrayList<>();
                             int len = response.length();
                             for (int i = 0 ; i<len; i++){
                                 JSONObject x1 = (JSONObject) response.get(i);
@@ -83,18 +83,34 @@ public class EstadoTanque extends AppCompatActivity {
                                 Category elemento_tanque = new Category(x1.getString("id"),
                                         x1.getString("tipo"),x1.getString("peso"),
                                         x1.getString("ubicacion"),imagen);
-                                hp.add(elemento_tanque);
+                                lista_tanques.add(elemento_tanque);
                                 // (x1.getString("temperatura\n"));
                                 //IDtanque.append("Id: "+x1.getString("id"));
                                 //Estado_tanque.append(x1.getString("temperatura"));
                                 //Ubicacion_tanque.append(x1.getString("fecha_registro"));
                                 //cambiar_imagen_tanque(imagen_tanque);
                             }
-                            System.out.println("ANTESSSSSSSSSSSSSS"+hp.isEmpty());
+
+                            ListView lv = (ListView) findViewById(R.id.listView);
+
+                            AdapterItem adapter = new AdapterItem(actividad,lista_tanques);
+
+                            lv.setAdapter(adapter);
+
+                            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    final int pos = position;
+                                    //Intent tanque = new Intent(getBaseContext(),Tanque.class);
+                                    //startActivity(tanque); //AQUI ALGO COMO PUT EXTRAS PARA PASAR INFO DE QUE TANQUE SE REQUIERE PARAMETROS
+                                }
+                            });
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+
                     }
                 }, new Response.ErrorListener() {
             @Override

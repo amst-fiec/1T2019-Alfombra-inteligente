@@ -33,6 +33,12 @@
                 android:text="Ver estado del tanque" />
 
             <Button
+                    android:text="VER ESTADISTICAS"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btn_estadisticas"
+                    android:onClick="ver_estadisticas"/>
+            <Button
                 android:id="@+id/button5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
