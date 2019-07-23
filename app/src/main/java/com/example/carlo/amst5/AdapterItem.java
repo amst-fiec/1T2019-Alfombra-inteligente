@@ -60,13 +60,13 @@ public class AdapterItem extends BaseAdapter {
         Category dir = items.get(position);
 
         TextView title = (TextView) v.findViewById(R.id.txt_num_tanque);
-        title.setText("Tanque:   "+dir.getTitle());
+        title.setText("ID Tanque:   "+dir.getTitle());
 
         TextView description = (TextView) v.findViewById(R.id.txt_estado_tanque);
         description.setText(" Estado:   "+dir.getDescription());
 
         TextView ubicacion = (TextView) v.findViewById(R.id.txt_ubicacion) ;
-        ubicacion.setText(" Ubicacion:   "+dir.getUbicacion());
+        ubicacion.setText(" Fecha:   "+dir.getUbicacion());
 
         ImageView imagen = (ImageView) v.findViewById(R.id.img_tanque);
         imagen.setImageDrawable(dir.getImage());

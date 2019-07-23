@@ -61,7 +61,7 @@ public class EstadoTanque extends AppCompatActivity {
 
     private void Obtener_estado_de_tanques() {
 
-        String url1 = " https://amstdb.herokuapp.com/db/tanque";
+        String url1 = " https://amstdb.herokuapp.com/db/registroEstadoTanque";
 
         JsonArrayRequest request = new JsonArrayRequest(
 
@@ -73,23 +73,38 @@ public class EstadoTanque extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
 
                         try {
+
                             ArrayList<Category> lista_tanques= new ArrayList<>();
                             int len = response.length();
-                            for (int i = 0 ; i<len; i++){
-                                JSONObject x1 = (JSONObject) response.get(i);
+                            ArrayList<String> tanques = ResponseUtils.obtenerListaTanques(response);
+
+                            for (String x : tanques){
+                                JSONObject x1 = (JSONObject)ResponseUtils.obtenerUltimoRegistro(x,response);
                                 // OJO
+
                                 Drawable imagen = obtener_imagen_estado_del_tanque(85);
                                 //por el momento es el unico double que tengo de info en la API
-                                Category elemento_tanque = new Category(x1.getString("id"),
-                                        x1.getString("tipo"),x1.getString("peso"),
-                                        x1.getString("ubicacion"),imagen);
+                                Category elemento_tanque = new Category(x1.getString("estado"),x1.getString("fechaRegistro"),
+                                        x1.getString("tanque"),imagen);
                                 lista_tanques.add(elemento_tanque);
-                                // (x1.getString("temperatura\n"));
-                                //IDtanque.append("Id: "+x1.getString("id"));
-                                //Estado_tanque.append(x1.getString("temperatura"));
-                                //Ubicacion_tanque.append(x1.getString("fecha_registro"));
-                                //cambiar_imagen_tanque(imagen_tanque);
+
                             }
+
+//                            for (int i = 0 ; i<len; i++){
+//                                JSONObject x1 = (JSONObject) response.get(i);
+//                                // OJO
+//                                Drawable imagen = obtener_imagen_estado_del_tanque(85);
+//                                //por el momento es el unico double que tengo de info en la API
+//                                Category elemento_tanque = new Category(x1.getString("id"),
+//                                        x1.getString("tipo"),x1.getString("peso"),
+//                                        x1.getString("ubicacion"),imagen);
+//                                lista_tanques.add(elemento_tanque);
+//                                // (x1.getString("temperatura\n"));
+//                                //IDtanque.append("Id: "+x1.getString("id"));
+//                                //Estado_tanque.append(x1.getString("temperatura"));
+//                                //Ubicacion_tanque.append(x1.getString("fecha_registro"));
+//                                //cambiar_imagen_tanque(imagen_tanque);
+//                            }
 
                             ListView lv = (ListView) findViewById(R.id.listView);
 
@@ -132,17 +147,12 @@ public class EstadoTanque extends AppCompatActivity {
 
     private Drawable obtener_imagen_estado_del_tanque(double porcentaje_tanque){
         Resources res = getResources();
-        if (porcentaje_tanque>=25){
-            if(porcentaje_tanque>=25 & porcentaje_tanque<50){
-                return res.getDrawable(R.drawable.tanque_medium);
+            if(porcentaje_tanque>=75){
+                return res.getDrawable(R.drawable.high);
+            }else if(porcentaje_tanque>=50){
+                return res.getDrawable(R.drawable.medium);
             }
-            if(porcentaje_tanque>=50 & porcentaje_tanque<75){
-                return res.getDrawable(R.drawable.tanque_high);
-            }
-            if(porcentaje_tanque>=75 & porcentaje_tanque<100){
-                return res.getDrawable(R.drawable.tanque_full);
-            }
-        }
-        return res.getDrawable(R.drawable.tanque_low);
+            return res.getDrawable(R.drawable.low);
+
     }
 }

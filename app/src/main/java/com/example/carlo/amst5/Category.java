@@ -5,20 +5,20 @@ import android.graphics.drawable.Drawable;
 public class Category {
 
     private String categoryId;
-    private String title,description,ubicacion;
+    private String title,estado,fecha;
     private Drawable imagen;
 
     public Category() {
         super();
     }
 
-    public Category(String categoryId, String title, String description, String location, Drawable imagen) {
+    public Category( String estado, String fecha, String tanque, Drawable imagen) {
         super();
-        this.title = title;
-        this.description = description;
-        this.ubicacion=location;
+        this.title = tanque;
+        this.estado = estado;
+        this.fecha=fecha;
         this.imagen = imagen;
-        this.categoryId = categoryId;
+
     }
 
 
@@ -27,7 +27,7 @@ public class Category {
     }
 
     public String getUbicacion(){
-        return ubicacion;
+        return fecha;
     }
 
     public void setTittle(String title) {
@@ -35,11 +35,11 @@ public class Category {
     }
 
     public String getDescription() {
-        return description;
+        return estado;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.estado = description;
     }
 
     public Drawable getImage() {
@@ -51,7 +51,7 @@ public class Category {
     }
 
     public void setUbicacion(String location){
-        this.ubicacion = location;
+        this.fecha = location;
     }
 
     public String getCategoryId(){return categoryId;}

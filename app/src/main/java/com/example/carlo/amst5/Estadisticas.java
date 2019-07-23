@@ -1,58 +1,127 @@
 package com.example.carlo.amst5;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.View;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieDataSet;
+
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Estadisticas extends AppCompatActivity {
+
+
+    private static RequestQueue mQueue;
+    private static String token = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_estadisticas);
+        mQueue = Volley.newRequestQueue(this);
+        Intent login = getIntent();
+        this.token = (String)login.getExtras().get("token");
+        Obtener_estado_de_tanques();
 
-        PieChart pieChart;
-        pieChart = (PieChart) findViewById(R.id.pieChart);
-        /*definimos algunos atributos*/
-        pieChart.setHoleRadius(40f);
-        pieChart.setRotationEnabled(true);
-        pieChart.animateXY(1500, 1500);
-        /*creamos una lista para los valores Y*/
-        ArrayList<Entry> valsY = new ArrayList<Entry>();
-        valsY.add(new Entry(5* 100 / 25,0));
-        valsY.add(new Entry(20 * 100 / 25,1));
-        /*creamos una lista para los valores X*/
-        ArrayList<String> valsX = new ArrayList<String>();
-        valsX.add("Varones");
-        valsX.add("Mujeres");
-        /*creamos una lista de colores*/
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(Color.RED);
-        colors.add(Color.GREEN);
-        /*seteamos los valores de Y y los colores*/
-        PieDataSet set1 = new PieDataSet(valsY,null);
-        set1.setSliceSpace(3f);
-        set1.setColors(colors);
-        /*seteamos los valores de X*/
-        PieData data = new PieData(valsX, set1);
-        pieChart.setData(data);
-        pieChart.highlightValues(null);
-        pieChart.invalidate();
+
+
+
+    }
+
+    public void Obtener_estado_de_tanques() {
+
+
+
+
+
+
+        String url1 = " https://amstdb.herokuapp.com/db/registroEstadoTanque";
+        final JSONArray[] responseR = new JSONArray[1];
+
+        JsonArrayRequest request = new JsonArrayRequest(
+
+                Request.Method.GET, url1, null,
+
+                new Response.Listener<JSONArray>() {
+
+                    @Override
+                    public void onResponse(JSONArray response) {
+
+                        try {
+                            System.out.println("AQUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+                            int uno = ResponseUtils.obtenerEstadisticas(response)[0];
+                            int dos = ResponseUtils.obtenerEstadisticas(response)[1];
+                            System.out.println("UNOOOOOOOOOOOOOOOOOOO"+uno);
+                            System.out.println("DOOOOOOOOOOOOOOOOOOOS"+dos);
+                            PieChart pieChart;
+                            pieChart = (PieChart) findViewById(R.id.pieChart);
+                            /*definimos algunos atributos*/
+                            pieChart.setHoleRadius(40f);
+                            pieChart.setRotationEnabled(true);
+                            pieChart.animateXY(1500, 1500);
+                            /*creamos una lista para los valores Y*/
+                            ArrayList<Entry> valsY = new ArrayList<Entry>();
+
+
+                            valsY.add(new Entry((uno*100)/(uno+dos),0));
+                            valsY.add(new Entry((dos*100)/(uno+dos),1));
+                            /*creamos una lista para los valores X*/
+                            ArrayList<String> valsX = new ArrayList<String>();
+                            valsX.add("Estables");
+                            valsX.add("Vacios");
+                            /*creamos una lista de colores*/
+                            ArrayList<Integer> colors = new ArrayList<Integer>();
+                            colors.add(Color.RED);
+                            colors.add(Color.GREEN);
+                            /*seteamos los valores de Y y los colores*/
+                            PieDataSet set1 = new PieDataSet(valsY,null);
+                            set1.setSliceSpace(3f);
+                            set1.setColors(colors);
+                            /*seteamos los valores de X*/
+                            PieData data = new PieData(valsX, set1);
+                            pieChart.setData(data);
+                            pieChart.highlightValues(null);
+                            pieChart.invalidate();
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "JWT " + token);
+                //System.out.println(token);
+                return params;
+            }
+        };
+        mQueue.add(request);
+
     }
 
 }

@@ -61,20 +61,20 @@ public class menu extends AppCompatActivity {
     public void presentar_estado_bateria(int porcentaje, boolean status_charging) {
         ImageView bateria = (ImageView) findViewById(R.id.Battery_View);
         if (status_charging) {
-            bateria.setImageResource(R.drawable.bateria_charging);
+            bateria.setImageResource(R.drawable.tanque_high);
         } else {
             if (porcentaje >=85) {
-                bateria.setImageResource(R.drawable.bateria_full);
+                bateria.setImageResource(R.drawable.tanque_high);
             } else if (porcentaje >= 70 & porcentaje < 85) {
-                bateria.setImageResource(R.drawable.bateria_super_high);
+                bateria.setImageResource(R.drawable.tanque_high);
             } else if (porcentaje >= 55 & porcentaje < 70) {
-                bateria.setImageResource(R.drawable.bateria_high);
+                bateria.setImageResource(R.drawable.tanque_high);
             } else if (porcentaje >= 40 & porcentaje < 55) {
-                bateria.setImageResource(R.drawable.bateria_medium);
+                bateria.setImageResource(R.drawable.tanque_medium);
             } else if (porcentaje >= 35 & porcentaje < 40){
-                bateria.setImageResource(R.drawable.bateria_low);
+                bateria.setImageResource(R.drawable.tanque_low);
             }else if (porcentaje >= 20 & porcentaje < 35){
-                bateria.setImageResource(R.drawable.bateria_super_low);
+                bateria.setImageResource(R.drawable.tanque_low);
                 Toast.makeText(this,"Bateria por agotarse. Por favor coloque una nueva",Toast.LENGTH_LONG).show();
             }
         }
@@ -115,10 +115,10 @@ public class menu extends AppCompatActivity {
     }
 
     public void revisarEstadoTanque(View v) {
-        Intent estado_tanque = new Intent(getBaseContext(),
-                EstadoTanque.class);
-        estado_tanque.putExtra("token", token);
-        startActivity(estado_tanque);
+        Intent menu_tanques = new Intent(getBaseContext(),
+                menu_tanques.class);
+        menu_tanques.putExtra("token", token);
+        startActivity(menu_tanques);
     }
 
     public void ver_estadisticas(View v) {
