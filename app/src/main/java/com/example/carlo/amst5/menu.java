@@ -38,7 +38,6 @@ public class menu extends AppCompatActivity {
         mQueue = Volley.newRequestQueue(this);
         presentar_estado_bateria();
 
-
     }
 
     public void Salir(View v) {
@@ -124,6 +123,13 @@ public class menu extends AppCompatActivity {
     public void ver_estadisticas(View v) {
         Intent ventana = new Intent(getBaseContext(),
                 Estadisticas.class);
+        ventana.putExtra("token", token);
+        startActivity(ventana);
+    }
+
+    public void ver_historico(View v) {
+        Intent ventana = new Intent(getBaseContext(),
+                Historico.class);
         ventana.putExtra("token", token);
         startActivity(ventana);
     }

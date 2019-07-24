@@ -41,7 +41,6 @@ public class menu_tanques extends AppCompatActivity {
         setContentView(R.layout.activity_menu_tanques);
         Intent login = getIntent();
         helper = new dbAdapter(this);
-
         this.token = (String) login.getExtras().get("token");
 
     }
