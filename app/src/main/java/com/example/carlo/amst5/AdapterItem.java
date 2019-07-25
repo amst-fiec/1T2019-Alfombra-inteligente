@@ -1,5 +1,6 @@
 package com.example.carlo.amst5;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -47,6 +48,7 @@ public class AdapterItem extends BaseAdapter {
         return position;
     }
 
+    @SuppressLint({"InflateParams", "SetTextI18n"})
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 

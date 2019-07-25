@@ -11,13 +11,13 @@
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:contentDescription="@string/imagen_del_sistema1"
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/fondo3" />
 
@@ -27,26 +27,27 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="237dp"
+                android:contentDescription="@string/imagen_del_sistema2"
                 app:srcCompat="@drawable/logo" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="0dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="293dp"
-                    android:layout_marginBottom="40dp"
-                    android:layout_marginEnd="50dp"
                     android:layout_marginStart="50dp"
+                    android:layout_marginEnd="50dp"
+                    android:layout_marginBottom="40dp"
                     android:background="#bbffffff"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:ignore="UselessParent">
 
                     <Space
                         android:layout_width="match_parent"
@@ -59,7 +60,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:ems="10"
-                        android:hint="Usuario"
+                        android:hint="@string/usuario"
                         android:inputType="text" />
 
                     <Space
@@ -73,7 +74,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:ems="10"
-                        android:hint="Contraseña"
+                        android:hint="@string/contrase_a"
                         android:inputType="textPassword" />
 
                     <Space
@@ -81,14 +82,13 @@
                         android:layout_height="31dp" />
 
                     <Button
-                        android:id="@+id/button"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="40dp"
                         android:layout_marginRight="40dp"
                         android:background="#496171db"
                         android:onClick="irMenuPrincipal"
-                        android:text="Inicio de Sesión" />
+                        android:text="@string/inicio_de_sesi_n" />
 
                 </LinearLayout>
             </LinearLayout>

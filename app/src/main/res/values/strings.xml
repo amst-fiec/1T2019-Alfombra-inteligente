@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">AMST5</string>
     <string name="title_activity_estadisticas">Estadisticas</string>
+    <string name="inicio_de_sesi_n">Inicio de Sesión</string>
+    <string name="usuario">Usuario</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="imagen_del_sistema2">Imagen del sistema2</string>
+    <string name="imagen_del_sistema1">Imagen del sistema1</string>
 </resources>

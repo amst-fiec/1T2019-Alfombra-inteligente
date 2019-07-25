@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.EditText;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -46,11 +47,7 @@ public class Estadisticas extends AppCompatActivity {
     }
 
     public void Obtener_estado_de_tanques() {
-
-
-
-
-
+        //final EditText codigo = (EditText) findViewById(R.id.txt_id_consultar_historico);
 
         String url1 = " https://amstdb.herokuapp.com/db/registroEstadoTanque";
         final JSONArray[] responseR = new JSONArray[1];

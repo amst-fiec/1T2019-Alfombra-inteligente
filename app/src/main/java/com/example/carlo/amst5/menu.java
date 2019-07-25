@@ -129,7 +129,7 @@ public class menu extends AppCompatActivity {
 
     public void ver_historico(View v) {
         Intent ventana = new Intent(getBaseContext(),
-                Historico.class);
+                registroHistorico.class);
         ventana.putExtra("token", token);
         startActivity(ventana);
     }

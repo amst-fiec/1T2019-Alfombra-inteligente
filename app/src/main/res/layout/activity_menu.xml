@@ -15,10 +15,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <TextView
-                android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="179dp"
                 android:gravity="center"
@@ -26,7 +26,6 @@
                 android:textSize="36sp" />
 
             <Button
-                android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="revisarEstadoTanque"
@@ -36,41 +35,38 @@
                     android:text="VER ESTADISTICAS"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/btn_estadisticas"
-                    android:onClick="ver_estadisticas"/>
+                android:onClick="ver_estadisticas"/>
 
             <Button
-                android:id="@+id/button6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="ver_historico"
-                android:text="Button" />
+                android:text="Consultar Histórico" />
 
             <Button
-                android:id="@+id/button5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="Salir"
                 android:text="SALIR" />
 
             <ImageButton
-                android:id="@+id/btn_refresh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:onClick="initializeComponents"
                 android:scaleType="center"
-                app:srcCompat="@android:drawable/ic_popup_sync" />
+                app:srcCompat="@android:drawable/ic_popup_sync"
+                android:contentDescription="Imagen del sistema" />
 
             <TextView
-                android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="110dp" />
 
             <ImageView
                 android:id="@+id/Battery_View"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:contentDescription="Imagen del sistema" />
 
         </LinearLayout>
 
