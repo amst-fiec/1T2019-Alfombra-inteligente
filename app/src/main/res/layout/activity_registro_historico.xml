@@ -1,56 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".registroHistorico">
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:fillViewport="true"
+    android:scrollbars = "vertical"
+    android:scrollbarStyle="insideInset" >
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:id="@+id/contenedor">
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barChart"
+            android:layout_width="match_parent"
+            android:layout_height="400dp">
+        </com.github.mikephil.charting.charts.BarChart>
 
-        <view
-            android:id="@+id/bar"
-            class="com.github.mikephil.charting.charts.BarChart"
-            id="@+id/view"
-            android:layout_width="399dp"
-            android:layout_height="422dp" />
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Registros del Tanque"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="71dp"
+            android:layout_height="20dp"
             android:orientation="horizontal">
 
-            <Space
-                android:layout_width="18dp"
-                android:layout_height="115dp"
-                android:layout_weight="1" />
-
             <TextView
-                android:layout_width="62dp"
-                android:layout_height="38dp"
-                android:text="ID: "
-                android:textSize="18sp"
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="#635D5D"
+                android:gravity="center"
+                android:text="Estado"
+                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/txt_id_consultar_historico"
-                android:layout_width="300dp"
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
-                android:hint="Ingresa el ID del tanque a consultar"
-                android:inputType="textPersonName" />
+                android:background="#635D5D"
+                android:gravity="center"
+                android:text="Fecha y hora "
+                android:textColor="#FFFFFF"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <Button
+        <LinearLayout
+            android:id="@+id/cont_temperaturas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="Obtener_estado_de_tanques"
-            android:text="Consultar" />
-
+            android:layout_height="match_parent"
+            android:orientation="vertical"></LinearLayout>
     </LinearLayout>
-
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

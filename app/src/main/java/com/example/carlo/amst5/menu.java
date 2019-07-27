@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -36,7 +38,7 @@ public class menu extends AppCompatActivity {
         this.token = (String) login.getExtras().get("token");
         this.token = viewdata();
         mQueue = Volley.newRequestQueue(this);
-        presentar_estado_bateria();
+        initializeComponents();
 
     }
 
@@ -46,8 +48,10 @@ public class menu extends AppCompatActivity {
         System.exit(0);
     }
 
-    public void initializeComponents(View v){
-        presentar_estado_bateria();
+    public void initializeComponents(){
+        ProgressBar bateria = (ProgressBar) findViewById(R.id.progressBar2);
+        TextView porcentaje = findViewById(R.id.porcentaje_bateria);
+        bateria.setProgress(35);porcentaje.setText("35%");
     }
 
     public String viewdata()
@@ -57,65 +61,9 @@ public class menu extends AppCompatActivity {
         return data;
     }
 
-    public void presentar_estado_bateria(int porcentaje, boolean status_charging) {
-        ImageView bateria = (ImageView) findViewById(R.id.Battery_View);
-        if (status_charging) {
-            bateria.setImageResource(R.drawable.tanque_high);
-        } else {
-            if (porcentaje >=85) {
-                bateria.setImageResource(R.drawable.tanque_high);
-            } else if (porcentaje >= 70 & porcentaje < 85) {
-                bateria.setImageResource(R.drawable.tanque_high);
-            } else if (porcentaje >= 55 & porcentaje < 70) {
-                bateria.setImageResource(R.drawable.tanque_high);
-            } else if (porcentaje >= 40 & porcentaje < 55) {
-                bateria.setImageResource(R.drawable.tanque_medium);
-            } else if (porcentaje >= 35 & porcentaje < 40){
-                bateria.setImageResource(R.drawable.tanque_low);
-            }else if (porcentaje >= 20 & porcentaje < 35){
-                bateria.setImageResource(R.drawable.tanque_low);
-                Toast.makeText(this,"Bateria por agotarse. Por favor coloque una nueva",Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    public void presentar_estado_bateria() {
-        final int[] bateria = new int[1];
-        String url_temp = "https://amstdb.herokuapp.com/db/logUno/56";  //VER EN BASE
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET, url_temp, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println(response);
-                        try {
-                            presentar_estado_bateria(Integer.parseInt(response.getString("value")), status_charging);
-                            ;
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "JWT " + token);
-                System.out.println(token);
-                return params;
-            }
-        };
-        ;
-        mQueue.add(request);
-
-    }
-
     public void revisarEstadoTanque(View v) {
         Intent menu_tanques = new Intent(getBaseContext(),
-                menu_tanques.class);
+                EstadoTanque.class);
         menu_tanques.putExtra("token", token);
         startActivity(menu_tanques);
     }

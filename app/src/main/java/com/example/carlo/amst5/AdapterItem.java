@@ -62,13 +62,16 @@ public class AdapterItem extends BaseAdapter {
         Category dir = items.get(position);
 
         TextView title = (TextView) v.findViewById(R.id.txt_num_tanque);
-        title.setText("ID Tanque:   "+dir.getTitle());
+        title.setText("Tanque:   "+dir.getTitle());
 
         TextView description = (TextView) v.findViewById(R.id.txt_estado_tanque);
         description.setText(" Estado:   "+dir.getDescription());
 
         TextView ubicacion = (TextView) v.findViewById(R.id.txt_ubicacion) ;
-        ubicacion.setText(" Fecha:   "+dir.getUbicacion());
+        String[] cadenaSplit = dir.getUbicacion().split("T");
+        String fecha = cadenaSplit[0];
+        String hora = cadenaSplit[1].split("\\.")[0];
+        ubicacion.setText(" Fecha y hora de registro:\n\t"+fecha+"\t\t"+hora);
 
         ImageView imagen = (ImageView) v.findViewById(R.id.img_tanque);
         imagen.setImageDrawable(dir.getImage());

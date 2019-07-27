@@ -2,7 +2,10 @@ package com.example.carlo.amst5;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 
@@ -17,6 +20,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.utils.ColorFormatter;
 
 
 import org.json.JSONArray;
@@ -70,8 +74,8 @@ public class Estadisticas extends AppCompatActivity {
                             PieChart pieChart;
                             pieChart = (PieChart) findViewById(R.id.pieChart);
                             /*definimos algunos atributos*/
-                            pieChart.setHoleRadius(40f);
-                            pieChart.setRotationEnabled(true);
+                            pieChart.setHoleRadius(35f);
+                            //pieChart.setRotationEnabled(true);
                             pieChart.animateXY(1500, 1500);
                             /*creamos una lista para los valores Y*/
                             ArrayList<Entry> valsY = new ArrayList<Entry>();
@@ -85,17 +89,21 @@ public class Estadisticas extends AppCompatActivity {
                             valsX.add("Vacios");
                             /*creamos una lista de colores*/
                             ArrayList<Integer> colors = new ArrayList<Integer>();
-                            colors.add(Color.RED);
-                            colors.add(Color.GREEN);
+                            colors.add(Color.parseColor("#FFA0B1A6"));
+                            colors.add(Color.parseColor("#FFA8857E"));
                             /*seteamos los valores de Y y los colores*/
-                            PieDataSet set1 = new PieDataSet(valsY,null);
-                            set1.setSliceSpace(3f);
+                            PieDataSet set1 = new PieDataSet(valsY,"");
                             set1.setColors(colors);
                             /*seteamos los valores de X*/
                             PieData data = new PieData(valsX, set1);
+                            data.setValueTextSize(16f);
+                            data.setValueTextColor(Color.WHITE);
                             pieChart.setData(data);
-                            pieChart.highlightValues(null);
-                            pieChart.invalidate();
+                            //pieChart.setDrawHoleEnabled(false);
+                            pieChart.setDescription("");
+                            //pieChart.setDescriptionTextSize(100);
+                            //pieChart.highlightValues(null);
+                            //pieChart.invalidate();
 
 
                         } catch (Exception e) {
