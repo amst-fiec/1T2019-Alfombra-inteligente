@@ -65,7 +65,11 @@ public class AdapterItem extends BaseAdapter {
         title.setText("Tanque:   "+dir.getTitle());
 
         TextView description = (TextView) v.findViewById(R.id.txt_estado_tanque);
-        description.setText(" Estado:   "+dir.getDescription());
+        String estado = dir.getDescription();String imprime_estado = "";
+        if (estado.equals("ES")){
+            imprime_estado = "ESTABLE";
+        }else imprime_estado = "VACIO";
+        description.setText(" Estado:   "+imprime_estado);
 
         TextView ubicacion = (TextView) v.findViewById(R.id.txt_ubicacion) ;
         String[] cadenaSplit = dir.getUbicacion().split("T");

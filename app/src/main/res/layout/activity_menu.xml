@@ -168,8 +168,10 @@
 
                     android:layout_height="100dp"
 
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="center|center_horizontal"
 
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
                     android:src="@drawable/estadistica" />
 
 
@@ -364,11 +366,12 @@
 
             <ProgressBar
                 android:id="@+id/progressBar3"
-                style="@android:style/Widget.Holo.Light.ProgressBar.Large"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="219dp"
+                android:layout_height="220dp"
                 android:max="100"
-                android:progress="35"
+                android:progressDrawable="@drawable/circle"
+                android:progressTint="@color/colorPrimaryDark"
                 android:scaleX="0.8"
                 android:scaleY="0.8"
                 android:visibility="visible"
@@ -383,7 +386,7 @@
                 <TextView
                     android:id="@+id/porcentaje_bateria"
                     android:layout_width="match_parent"
-                    android:layout_height="219dp"
+                    android:layout_height="220dp"
                     android:gravity="center_horizontal|center_vertical"
                     android:text="--%"
                     android:textAlignment="center"

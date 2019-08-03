@@ -79,7 +79,7 @@ public class EstadoTanque extends AppCompatActivity {
 
                             final ArrayList<Category> lista_tanques = new ArrayList<>();
                             ArrayList<String> tanques = ResponseUtils.obtenerListaTanques(response);
-                            presentar_informacion_de_tanques(token,tanques,actividad,response);
+                            //presentar_informacion_de_tanques(token,tanques,actividad,response);
                             for (String id_tanque : tanques) {
                                 JSONObject x1 = (JSONObject) ResponseUtils.obtenerUltimoRegistro(id_tanque,response);
                                 // OJO

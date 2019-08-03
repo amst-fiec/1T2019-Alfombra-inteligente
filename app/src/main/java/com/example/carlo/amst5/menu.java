@@ -50,8 +50,9 @@ public class menu extends AppCompatActivity {
 
     public void initializeComponents(){
         ProgressBar bateria = (ProgressBar) findViewById(R.id.progressBar2);
+        ProgressBar bateria_circulo = (ProgressBar) findViewById(R.id.progressBar3);
         TextView porcentaje = findViewById(R.id.porcentaje_bateria);
-        bateria.setProgress(35);porcentaje.setText("35%");
+        bateria_circulo.setProgress(50);bateria.setProgress(50);porcentaje.setText("50%");
     }
 
     public String viewdata()

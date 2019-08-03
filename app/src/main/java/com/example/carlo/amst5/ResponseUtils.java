@@ -19,7 +19,10 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ResponseUtils {
@@ -46,8 +49,41 @@ public class ResponseUtils {
                 registro.put((JSONObject) response.get(i));
             }
         }
-        System.out.println(registro);
-        return registro;
+
+        JSONArray sortedJsonArray = new JSONArray();
+
+        List<JSONObject> jsonValues = new ArrayList<JSONObject>();
+        for (int i = 0; i < registro.length(); i++) {
+            jsonValues.add(registro.getJSONObject(i));
+        }
+        Collections.sort( jsonValues, new Comparator<JSONObject>() {
+            //You can change "Name" with "ID" if you want to sort by ID
+            private static final String KEY_NAME = "fechaRegistro";
+
+            @Override
+            public int compare(JSONObject a, JSONObject b) {
+                String valA = new String();
+                String valB = new String();
+
+                try {
+                    valA = (String) a.get(KEY_NAME);
+                    valB = (String) b.get(KEY_NAME);
+                }
+                catch (JSONException e) {
+                    System.out.println("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+                }
+
+                return valA.compareTo(valB);
+                //if you want to change the sort order, simply use the following:
+                //return -valA.compareTo(valB);
+            }
+        });
+
+        for (int i = 0; i < registro.length(); i++) {
+            sortedJsonArray.put(jsonValues.get(i));
+        }
+        System.out.println("EHHHHHHHHHHHHHHHHHHHHH"+sortedJsonArray);
+        return sortedJsonArray;
     }
 
     public static Integer[] obtenerEstadisticas(JSONArray response) throws JSONException {

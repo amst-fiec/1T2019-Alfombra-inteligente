@@ -103,7 +103,8 @@ public class registroHistorico extends AppCompatActivity {
         int contador = 0;
         try {
             JSONArray respuesta = (JSONArray) ResponseUtils.obtenerRegistrosTanque(id_tanque, response);
-            for (int i = 0; i < respuesta.length(); i++) {
+            int len = respuesta.length();
+            for (int i = len - 5; i < len; i++) {
                 JSONObject p = (JSONObject) respuesta.get(i);
                 String temp1 = (String) p.get("estado").toString();
                 String[] fecha = p.get("fechaRegistro").toString().split("T");
@@ -121,7 +122,7 @@ public class registroHistorico extends AppCompatActivity {
                 }
             }
             BarChart graficoBarras = findViewById(R.id.barChart);
-            BarDataSet dataset = new BarDataSet(entradas, "Estados: (1) ES, (0) VA");
+            BarDataSet dataset = new BarDataSet(entradas, "Estados: (1) ESTABLE, (0) VACIO");
             BarData datos = new BarData(etiquetas, dataset);
             graficoBarras.setData(datos);
 
@@ -169,9 +170,14 @@ public class registroHistorico extends AppCompatActivity {
                         nuevoRegistro.setOrientation(LinearLayout.HORIZONTAL);
                 valorRegistro = new TextView(this);
                 valorRegistro.setLayoutParams(parametrosLayout);
-                valorRegistro.setText(registroTemp.getString("estado")+"\t\t");
+                String estado = registroTemp.getString("estado");
+                String imprime_estado = "";
+                if (estado.equals("ES")){
+                    imprime_estado = "Estable";
+                }else imprime_estado = "  Vacio";
+                valorRegistro.setText(imprime_estado+"\t\t");
                 valorRegistro.setGravity(Gravity.CENTER);
-                if (registroTemp.getString("estado").equals("VA")){
+                if (estado.equals("VA")){
                     valorRegistro.setTextColor(Color.RED);
                 }
                 nuevoRegistro.addView(valorRegistro);
