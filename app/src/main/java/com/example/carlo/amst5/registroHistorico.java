@@ -2,6 +2,7 @@ package com.example.carlo.amst5;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -58,9 +59,10 @@ public class registroHistorico extends AppCompatActivity {
         Intent tanque = getIntent();
         this.id_tanque = (String) tanque.getExtras().get("id_tanque");
         this.token = (String)tanque.getExtras().get("token");
+        Dic_Estados =  new HashMap<String,TextView>();
+        Dic_fechas =  new HashMap<String,TextView>();
         Obtener_estado_de_tanque();
     }
-
 
     public void Obtener_estado_de_tanque() {
 
@@ -101,6 +103,7 @@ public class registroHistorico extends AppCompatActivity {
         ArrayList<BarEntry> entradas = new ArrayList<>();
         ArrayList<String> etiquetas = new ArrayList<>();
         int contador = 0;
+//        ArrayList<BarEntry> dato_temp = new ArrayList<>();
         try {
             JSONArray respuesta = (JSONArray) ResponseUtils.obtenerRegistrosTanque(id_tanque, response);
             int len = respuesta.length();
@@ -121,27 +124,47 @@ public class registroHistorico extends AppCompatActivity {
 
                 }
             }
-            BarChart graficoBarras = findViewById(R.id.barChart);
-            BarDataSet dataset = new BarDataSet(entradas, "Estados: (1) ESTABLE, (0) VACIO");
-            BarData datos = new BarData(etiquetas, dataset);
-            graficoBarras.setData(datos);
-
-            graficoBarras.setDescription("");
-            graficoBarras.setPinchZoom(false);
-            graficoBarras.setDrawBarShadow(false);
-            graficoBarras.setDrawGridBackground(false);
-            XAxis xAxis = graficoBarras.getXAxis();
-            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis.setDrawGridLines(false);
-            graficoBarras.getAxisLeft().setDrawGridLines(false);
-            graficoBarras.animateY(1500);
-
+            iniciargrafico();
+            llenargrafico(entradas,etiquetas);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void llenargrafico(ArrayList<BarEntry> entradas,ArrayList<String> etiquetas) {
+        BarChart graficoBarras = findViewById(R.id.barChart);
+        BarDataSet dataset;
+        if ( graficoBarras.getData() == null) {
+            graficoBarras.animateY(1500);
+        }
+            dataset = new BarDataSet(entradas, "Estados: (1) ESTABLE, (0) VACIO");
+            BarData datos = new BarData(etiquetas, dataset);
+            graficoBarras.setData(datos);
 
 
+        graficoBarras.invalidate();
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Obtener_estado_de_tanque();
+            }
+        };
+        handler.postDelayed(runnable, 15000);
+
+    }
+
+    private void iniciargrafico() {
+        BarChart graficoBarras = findViewById(R.id.barChart);
+        graficoBarras.setDescription("Estado del Tanque vs Tiempo");
+        graficoBarras.setPinchZoom(false);
+        graficoBarras.setDrawBarShadow(false);
+        graficoBarras.setDrawGridBackground(false);
+        XAxis xAxis = graficoBarras.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        graficoBarras.getAxisLeft().setDrawGridLines(false);
     }
 
 
@@ -159,15 +182,10 @@ public class registroHistorico extends AppCompatActivity {
             for (int i = 0; i < respuesta.length(); i++) {
                 JSONObject registroTemp = (JSONObject) respuesta.get(i);
                 String registroId = registroTemp.getString("id");
+                if( !this.Dic_Estados.containsKey(registroId) && !this.Dic_fechas.containsKey(registroId) ){
 
-                   /* if( Dic_Estados.containsKey(registroId) && Dic_fechas.containsKey(registroId) ){
-                        fechaRegistro = Dic_fechas.get(registroId);
-                        valorRegistro = Dic_Estados.get(registroId);
-                        fechaRegistro.setText(registroTemp.getString("fechaRegistro"));
-                        valorRegistro.setText(registroTemp.getString("estado") );
-                    } else {*/
-                        nuevoRegistro = new LinearLayout(this);
-                        nuevoRegistro.setOrientation(LinearLayout.HORIZONTAL);
+                nuevoRegistro = new LinearLayout(this);
+                nuevoRegistro.setOrientation(LinearLayout.HORIZONTAL);
                 valorRegistro = new TextView(this);
                 valorRegistro.setLayoutParams(parametrosLayout);
                 String estado = registroTemp.getString("estado");
@@ -189,15 +207,42 @@ public class registroHistorico extends AppCompatActivity {
                         fechaRegistro.setGravity(Gravity.CENTER);
                         nuevoRegistro.addView(fechaRegistro);
                         contenedorTemperaturas.addView(nuevoRegistro);
-                        //Dic_fechas.put(registroId, fechaRegistro);
-                        //Dic_Estados.put(registroId, valorRegistro);
-                   // }
-
+                        this.Dic_fechas.put(registroId, fechaRegistro);
+                        this.Dic_Estados.put(registroId, valorRegistro);
+                    }
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+   /* private void actualizarGrafico(JSONArray response){
+        JSONObject registro_temp;
+        String temp;
+        String date;
+        int count = 0;
+        float temp_val;
+        ArrayList<BarEntry> dato_temp = new ArrayList<>();
+        try {
+            JSONArray respuesta = (JSONArray) ResponseUtils.obtenerRegistrosTanque(id_tanque, response);
+            for (int i = 0; i < respuesta.length(); i++) {
+                registro_temp = (JSONObject) respuesta.get(i);
+                if( registro_temp.getString("key").equals("temperatura")){
+                    temp = registro_temp.getString("value");
+                    date = registro_temp.getString("date_created");
+                    temp_val = Float.parseFloat(temp);
+                    dato_temp.add(new BarEntry(count, temp_val));
+                    count++;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            System.out.println("error");
+        }
+        System.out.println(dato_temp);
+        llenarGrafico(dato_temp);
+    }
+*/
 
 }
