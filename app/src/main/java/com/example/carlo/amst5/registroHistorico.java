@@ -3,6 +3,7 @@ package com.example.carlo.amst5;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
+import android.provider.CalendarContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -117,7 +118,12 @@ public class registroHistorico extends AppCompatActivity {
                     etiquetas.add(temp2);
                     contador++;
 
-                } else {
+                }else if(temp1.equals("ME")){
+                    entradas.add(new BarEntry(0.5f, contador));
+                    etiquetas.add(temp2);
+                    contador++;
+                }
+                else {
                     entradas.add(new BarEntry(0, contador));
                     etiquetas.add(temp2);
                     contador++;
@@ -138,7 +144,7 @@ public class registroHistorico extends AppCompatActivity {
         if ( graficoBarras.getData() == null) {
             graficoBarras.animateY(1500);
         }
-            dataset = new BarDataSet(entradas, "Estados: (1) ESTABLE, (0) VACIO");
+            dataset = new BarDataSet(entradas, "Estados: (1) ESTABLE, (0.5) MEDIO, (0) VACIO");
             BarData datos = new BarData(etiquetas, dataset);
             graficoBarras.setData(datos);
 
@@ -192,11 +198,15 @@ public class registroHistorico extends AppCompatActivity {
                 String imprime_estado = "";
                 if (estado.equals("ES")){
                     imprime_estado = "Estable";
-                }else imprime_estado = "  Vacio";
+                }else if(estado.equals("ME")){
+                    imprime_estado = " Medio";
+                }else imprime_estado = " Vacio";
                 valorRegistro.setText(imprime_estado+"\t\t");
                 valorRegistro.setGravity(Gravity.CENTER);
                 if (estado.equals("VA")){
                     valorRegistro.setTextColor(Color.RED);
+                }else if(estado.equals("ME")){
+                    valorRegistro.setTextColor(Color.parseColor("#FF8E96C8"));
                 }
                 nuevoRegistro.addView(valorRegistro);
                         fechaRegistro = new TextView(this);

@@ -68,14 +68,16 @@ public class AdapterItem extends BaseAdapter {
         String estado = dir.getDescription();String imprime_estado = "";
         if (estado.equals("ES")){
             imprime_estado = "ESTABLE";
+        }else if(estado.equals("ME")){
+            imprime_estado = "MEDIO";
         }else imprime_estado = "VACIO";
-        description.setText(" Estado:   "+imprime_estado);
 
+        description.setText(" Estado:   "+imprime_estado);
         TextView ubicacion = (TextView) v.findViewById(R.id.txt_ubicacion) ;
         String[] cadenaSplit = dir.getUbicacion().split("T");
         String fecha = cadenaSplit[0];
         String hora = cadenaSplit[1].split("\\.")[0];
-        ubicacion.setText(" Fecha y hora de registro:\n\t"+fecha+"\t\t"+hora);
+        ubicacion.setText(" Fecha y hora de último registro:\n\t"+fecha+"\t\t"+hora);
 
         ImageView imagen = (ImageView) v.findViewById(R.id.img_tanque);
         imagen.setImageDrawable(dir.getImage());
