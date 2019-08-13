@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -129,7 +130,19 @@ public class EstadoTanque extends AppCompatActivity {
             }
         };
         mQueue.add(request);
-
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Obtener_estado_de_tanques();
+            }
+        };
+        handler.postDelayed(runnable, 3000);
     }
+    @Override
+    protected void onResume() {
 
+        this.Obtener_estado_de_tanques();
+        super.onResume();
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.CalendarContract;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -45,9 +46,6 @@ public class Estadisticas extends AppCompatActivity {
         this.token = (String)login.getExtras().get("token");
         Obtener_estado_de_tanques();
 
-
-
-
     }
 
     public void Obtener_estado_de_tanques() {
@@ -73,10 +71,12 @@ public class Estadisticas extends AppCompatActivity {
                             System.out.println("DOOOOOOOOOOOOOOOOOOOS"+dos);
                             PieChart pieChart;
                             pieChart = (PieChart) findViewById(R.id.pieChart);
+                            if(pieChart.getData()==null){
+                                pieChart.animateXY(1500, 1500);
+                            }
                             /*definimos algunos atributos*/
                             pieChart.setHoleRadius(35f);
                             //pieChart.setRotationEnabled(true);
-                            pieChart.animateXY(1500, 1500);
                             /*creamos una lista para los valores Y*/
                             ArrayList<Entry> valsY = new ArrayList<Entry>();
 
@@ -85,8 +85,8 @@ public class Estadisticas extends AppCompatActivity {
                             valsY.add(new Entry((dos*100)/(uno+dos),1));
                             /*creamos una lista para los valores X*/
                             ArrayList<String> valsX = new ArrayList<String>();
-                            valsX.add("Estables");
-                            valsX.add("Vacios");
+                            valsX.add("% Estables");
+                            valsX.add("% Vacios");
                             /*creamos una lista de colores*/
                             ArrayList<Integer> colors = new ArrayList<Integer>();
                             colors.add(Color.parseColor("#FFA0B1A6"));
@@ -100,7 +100,8 @@ public class Estadisticas extends AppCompatActivity {
                             data.setValueTextColor(Color.WHITE);
                             pieChart.setData(data);
                             //pieChart.setDrawHoleEnabled(false);
-                            pieChart.setDescription("");
+                            ArrayList<String> tanques = ResponseUtils.obtenerListaTanques(response);
+                            pieChart.setDescription("Las estadisticas se obtuvieron de los "+tanques.size()+" tanques registrados");
                             //pieChart.setDescriptionTextSize(100);
                             //pieChart.highlightValues(null);
                             //pieChart.invalidate();
@@ -127,6 +128,14 @@ public class Estadisticas extends AppCompatActivity {
         };
         mQueue.add(request);
 
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                Obtener_estado_de_tanques();
+            }
+        };
+        handler.postDelayed(runnable, 3000);
     }
 
 }

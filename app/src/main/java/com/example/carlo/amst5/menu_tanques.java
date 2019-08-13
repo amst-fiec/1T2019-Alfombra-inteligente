@@ -31,7 +31,6 @@ import java.util.Map;
 public class menu_tanques extends AppCompatActivity {
 
     String token = "";
-
     private RequestQueue mQueue;
     dbAdapter helper;
 
@@ -45,10 +44,4 @@ public class menu_tanques extends AppCompatActivity {
 
     }
 
-    public void revisarTanques(View v) {
-        Intent estado_tanques = new Intent(getBaseContext(),
-                EstadoTanque.class);
-        estado_tanques.putExtra("token", token);
-        startActivity(estado_tanques);
-    }
 }

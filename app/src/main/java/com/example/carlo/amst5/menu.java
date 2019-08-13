@@ -2,6 +2,7 @@ package com.example.carlo.amst5;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -102,10 +103,14 @@ public class menu extends AppCompatActivity {
         };
         mQueue.add(request);
 
-
-
-
-
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                initializeComponents();
+            }
+        };
+        handler.postDelayed(runnable, 3000);
 
 
         ///////////////////////////////////////////////////////
@@ -133,9 +138,9 @@ public class menu extends AppCompatActivity {
         startActivity(ventana);
     }
 
-    public void ver_historico(View v) {
+    public void ver_info(View v) {
         Intent ventana = new Intent(getBaseContext(),
-                registroHistorico.class);
+                menu_tanques.class);
         ventana.putExtra("token", token);
         startActivity(ventana);
     }

@@ -51,6 +51,7 @@ public class registroHistorico extends AppCompatActivity {
     private LinearLayout contenedorTemperaturas;
     private Map<String, TextView> Dic_Estados;
     private Map<String, TextView> Dic_fechas;
+    private boolean primera_instancia = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,7 +158,7 @@ public class registroHistorico extends AppCompatActivity {
                 Obtener_estado_de_tanque();
             }
         };
-        handler.postDelayed(runnable, 15000);
+        handler.postDelayed(runnable, 3000);
 
     }
 
@@ -185,8 +186,10 @@ public class registroHistorico extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT, (float) 1);
         try {
             JSONArray respuesta = (JSONArray) ResponseUtils.obtenerRegistrosTanque(id_tanque, response);
-            for (int i = 0; i < respuesta.length(); i++) {
-                JSONObject registroTemp = (JSONObject) respuesta.get(i);
+            int len =respuesta.length();
+
+            for (int i = 1; i <= len; i++) {
+                JSONObject registroTemp = (JSONObject) respuesta.get(len-i);
                 String registroId = registroTemp.getString("id");
                 if( !this.Dic_Estados.containsKey(registroId) && !this.Dic_fechas.containsKey(registroId) ){
 
@@ -216,12 +219,14 @@ public class registroHistorico extends AppCompatActivity {
                         fechaRegistro.setText(cadenafechayhora);
                         fechaRegistro.setGravity(Gravity.CENTER);
                         nuevoRegistro.addView(fechaRegistro);
-                        contenedorTemperaturas.addView(nuevoRegistro);
+                        if (primera_instancia){
+                        contenedorTemperaturas.addView(nuevoRegistro);}
+                        else contenedorTemperaturas.addView(nuevoRegistro,0);
                         this.Dic_fechas.put(registroId, fechaRegistro);
                         this.Dic_Estados.put(registroId, valorRegistro);
                     }
-
             }
+            primera_instancia=false;
         } catch (JSONException e) {
             e.printStackTrace();
         }
