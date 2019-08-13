@@ -28,8 +28,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mQueue = Volley.newRequestQueue(this);
-        this.deleteDatabase("db");
+        //this.deleteDatabase("db");
         helper = new dbAdapter(this);
+        String data = helper.getData();
+        if (data.length()!=0){
+            saltarSesion(data);
+        }
+
     }
     public void irMenuPrincipal(View v){
         final EditText usuario = (EditText) findViewById(R.id.tx_usuario);
@@ -37,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
         String str_usuario = usuario.getText().toString();
         String str_password = password.getText().toString();
         iniciarSesion(str_usuario,str_password);
+    }
+
+    private void saltarSesion(String data){
+        Intent menuPrincipal = new
+                Intent(getBaseContext(), menu.class);
+        menuPrincipal.putExtra("token", data);
+        startActivity(menuPrincipal);
+
     }
     private void iniciarSesion(String usuario, String password){
         Map<String, String> params = new HashMap();
@@ -55,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                             Intent menuPrincipal = new
                                     Intent(getBaseContext(), menu.class);
                             long id = helper.insertData(token);
-                            //System.out.println(id + "RESULTADO DE ANADIIIIIIIIIIIIIIIIIIIIIIIR");
+                            String data = helper.getData();
+                            System.out.println(data);
+                            System.out.println(id + "RESULTADO DE ANADIIIIIIIIIIIIIIIIIIIIIIIR");
                             menuPrincipal.putExtra("token", token);
                             startActivity(menuPrincipal);
                         } catch (Exception e) {

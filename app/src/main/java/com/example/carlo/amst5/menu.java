@@ -1,10 +1,13 @@
 package com.example.carlo.amst5;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,13 +17,18 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.example.carlo.amst5.ResponseUtils.obtener_imagen_estado_del_tanque;
 
 public class menu extends AppCompatActivity {
     String token = "";
@@ -49,16 +57,65 @@ public class menu extends AppCompatActivity {
     }
 
     public void initializeComponents(){
-        ProgressBar bateria = (ProgressBar) findViewById(R.id.progressBar2);
-        ProgressBar bateria_circulo = (ProgressBar) findViewById(R.id.progressBar3);
-        TextView porcentaje = findViewById(R.id.porcentaje_bateria);
-        bateria_circulo.setProgress(50);bateria.setProgress(50);porcentaje.setText("50%");
+        final ProgressBar bateria = (ProgressBar) findViewById(R.id.progressBar2);
+        final ProgressBar bateria_circulo = (ProgressBar) findViewById(R.id.progressBar3);
+        final TextView porcentaje = findViewById(R.id.porcentaje_bateria);
+        ///////////////////////////////////////////////////////
+        String url1 = " https://amstdb.herokuapp.com/db/dispositivo/7";
+
+        JsonObjectRequest request = new JsonObjectRequest(
+
+                Request.Method.GET, url1, null,
+
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+
+                            final ArrayList<Category> lista_tanques = new ArrayList<>();
+                            String nivel_bateria = response.getString("bateria");
+                            bateria_circulo.setProgress(Integer.parseInt(nivel_bateria));
+                            bateria.setProgress(Integer.parseInt(nivel_bateria));
+                            porcentaje.setText(nivel_bateria+"%");
+
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "JWT " + token);
+                //System.out.println(token);
+                return params;
+            }
+        };
+        mQueue.add(request);
+
+
+
+
+
+
+
+        ///////////////////////////////////////////////////////
+
     }
 
     public String viewdata()
     {
         String data = helper.getData();
-        System.out.println("!!!!!!!AQUI DEBERIA ESTAR EL TOKEEEEEEEEN" +data);
+        //System.out.println("!!!!!!!AQUI DEBERIA ESTAR EL TOKEEEEEEEEN" +data);
         return data;
     }
 

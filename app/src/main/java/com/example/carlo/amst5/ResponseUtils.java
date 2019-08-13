@@ -93,7 +93,7 @@ public class ResponseUtils {
         estadisticas.add(0);
         for (String x : tanques) {
             JSONObject x1 = (JSONObject) ResponseUtils.obtenerUltimoRegistro(x, response);
-            if (x1.getString("estado").equals("ES")) {
+            if (x1.getString("estado").equals("ES") || x1.getString("estado").equals("ME")) {
                 estadisticas.set(0, estadisticas.get(0) + 1);
             } else {
                 estadisticas.set(1, estadisticas.get(1) + 1);

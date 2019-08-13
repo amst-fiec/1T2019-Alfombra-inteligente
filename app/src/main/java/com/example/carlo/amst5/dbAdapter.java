@@ -34,7 +34,7 @@ public class dbAdapter {
             int cid =cursor.getInt(cursor.getColumnIndex(myDbHelper.UID));
             String name =cursor.getString(cursor.getColumnIndex(myDbHelper.NAME));
 
-            System.out.println(cid + "***"+name);
+            System.out.println(cid + "*** DESPUES DE ESTO YA DEBERIA SALIR EL TOKEN"+name);
             buffer.append(name);
         }
         return buffer.toString();
