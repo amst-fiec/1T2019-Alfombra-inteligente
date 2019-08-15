@@ -16,6 +16,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         //this.deleteDatabase("db");
         helper = new dbAdapter(this);
         String data = helper.getData();
+        System.out.println(FirebaseInstanceId.getInstance().getToken());
         if (data.length()!=0){
             saltarSesion(data);
         }

@@ -20,6 +20,7 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
     public void onNewToken(String s) {
         //super.onNewToken(s);
         Log.d("TOKENFIREBASE", s);
+
     }
 
     @Override
