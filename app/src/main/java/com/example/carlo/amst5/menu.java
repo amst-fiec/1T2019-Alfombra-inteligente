@@ -1,6 +1,7 @@
 package com.example.carlo.amst5;
 
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -27,15 +28,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.carlo.amst5.ResponseUtils.obtener_imagen_estado_del_tanque;
+import com.google.android.youtube.player.YouTubeStandalonePlayer;
+import com.google.android.youtube.player.YouTubeInitializationResult;
 
 public class menu extends AppCompatActivity {
     String token = "";
     private boolean status_charging = false;
     private RequestQueue mQueue;
     dbAdapter helper;
+    private static final int REQ_START_STANDALONE_PLAYER = 1;
+    private static final int REQ_RESOLVE_SERVICE_MISSING = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,9 +145,37 @@ public class menu extends AppCompatActivity {
     }
 
     public void ver_info(View v) {
-        Intent ventana = new Intent(getBaseContext(),
-                menu_tanques.class);
-        ventana.putExtra("token", token);
-        startActivity(ventana);
+        String YOUTUBE_API_KEY = "AIzaSyDWrCvV7CajCVZorPkVkRHC5ijN6IZF4Uw";
+        final String VIDEO_ID = "vdGGdPUUSXw";
+        Intent intent = null;
+        boolean autoplay = true;
+        intent = YouTubeStandalonePlayer.createVideoIntent(this, YOUTUBE_API_KEY, VIDEO_ID, 0, autoplay, true);
+        if (intent != null) {
+            if (canResolveIntent(intent)) {
+                startActivityForResult(intent, REQ_START_STANDALONE_PLAYER);
+            } else {
+                // Could not resolve the intent - must need to install or update the YouTube API service.
+                YouTubeInitializationResult.SERVICE_MISSING
+                        .getErrorDialog(this, REQ_RESOLVE_SERVICE_MISSING).show();
+            }
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQ_START_STANDALONE_PLAYER && resultCode != RESULT_OK) {
+            YouTubeInitializationResult errorReason =
+                    YouTubeStandalonePlayer.getReturnedInitializationResult(data);
+            if (errorReason.isUserRecoverableError()) {
+                errorReason.getErrorDialog(this, 0).show();
+            } else {
+
+                Toast.makeText(this, "NO CONEXION", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    private boolean canResolveIntent(Intent intent) {
+        List<ResolveInfo> resolveInfo = getPackageManager().queryIntentActivities(intent, 0);
+        return resolveInfo != null && !resolveInfo.isEmpty();
     }
 }
