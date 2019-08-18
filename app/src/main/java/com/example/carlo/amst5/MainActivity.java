@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
                             //En caso de validacion correcta se obtiene el token y se ingresa a la ventana principal
                             token = response.getString("token");
                             Intent menuPrincipal = new Intent(getBaseContext(), menu.class);
+                            long id = helper.insertData(token);
+                            String data = helper.getData();
                             menuPrincipal.putExtra("token", token);
                             startActivity(menuPrincipal);
                         } catch (Exception e) {
