@@ -8,24 +8,20 @@ import android.graphics.Color;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
 import java.util.Random;
 
+//Clase creada para poder recibir notificaciones en el aplicativo
 public class MyFirebaseInstanceService extends FirebaseMessagingService {
-    //Ctrl + O
+
     @Override
     public void onNewToken(String s) {
-        //super.onNewToken(s);
         Log.d("TOKENFIREBASE", s);
-
     }
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        //super.onMessageReceived(remoteMessage);
         showNotification(remoteMessage.getNotification().getTitle(),
                 remoteMessage.getNotification().getBody());
     }

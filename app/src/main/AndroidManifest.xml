@@ -24,7 +24,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".menu" />
-        <activity android:name=".menu_tanques" />
         <activity android:name=".EstadoTanque" />
 
         <meta-data

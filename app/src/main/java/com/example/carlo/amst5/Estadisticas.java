@@ -2,14 +2,9 @@ package com.example.carlo.amst5;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.CalendarContract;
-import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,21 +16,15 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.utils.ColorFormatter;
-
-
 import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Estadisticas extends AppCompatActivity {
 
-
     private static RequestQueue mQueue;
     private static String token = "";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +34,9 @@ public class Estadisticas extends AppCompatActivity {
         Intent login = getIntent();
         this.token = (String)login.getExtras().get("token");
         Obtener_estado_de_tanques();
-
     }
 
     public void Obtener_estado_de_tanques() {
-        //final EditText codigo = (EditText) findViewById(R.id.txt_id_consultar_historico);
-
         String url1 = " https://amstdb.herokuapp.com/db/registroEstadoTanque";
         final JSONArray[] responseR = new JSONArray[1];
 
@@ -64,11 +50,8 @@ public class Estadisticas extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
 
                         try {
-                            System.out.println("AQUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
                             int uno = ResponseUtils.obtenerEstadisticas(response)[0];
                             int dos = ResponseUtils.obtenerEstadisticas(response)[1];
-                            System.out.println("UNOOOOOOOOOOOOOOOOOOO"+uno);
-                            System.out.println("DOOOOOOOOOOOOOOOOOOOS"+dos);
                             PieChart pieChart;
                             pieChart = (PieChart) findViewById(R.id.pieChart);
                             if(pieChart.getData()==null){
@@ -76,11 +59,8 @@ public class Estadisticas extends AppCompatActivity {
                             }
                             /*definimos algunos atributos*/
                             pieChart.setHoleRadius(35f);
-                            //pieChart.setRotationEnabled(true);
                             /*creamos una lista para los valores Y*/
                             ArrayList<Entry> valsY = new ArrayList<Entry>();
-
-
                             valsY.add(new Entry((uno*100)/(uno+dos),0));
                             valsY.add(new Entry((dos*100)/(uno+dos),1));
                             /*creamos una lista para los valores X*/
@@ -99,14 +79,8 @@ public class Estadisticas extends AppCompatActivity {
                             data.setValueTextSize(16f);
                             data.setValueTextColor(Color.WHITE);
                             pieChart.setData(data);
-                            //pieChart.setDrawHoleEnabled(false);
                             ArrayList<String> tanques = ResponseUtils.obtenerListaTanques(response);
                             pieChart.setDescription("Las estadisticas se obtuvieron de los "+tanques.size()+" tanques registrados");
-                            //pieChart.setDescriptionTextSize(100);
-                            //pieChart.highlightValues(null);
-                            //pieChart.invalidate();
-
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -122,12 +96,12 @@ public class Estadisticas extends AppCompatActivity {
             {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Authorization", "JWT " + token);
-                //System.out.println(token);
                 return params;
             }
         };
         mQueue.add(request);
 
+        //Se actualiza el grafico cada 3 segundos
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override

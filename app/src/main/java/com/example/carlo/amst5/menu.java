@@ -2,42 +2,29 @@ package com.example.carlo.amst5;
 
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.example.carlo.amst5.ResponseUtils.obtener_imagen_estado_del_tanque;
 import com.google.android.youtube.player.YouTubeStandalonePlayer;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 
 public class menu extends AppCompatActivity {
     String token = "";
-    private boolean status_charging = false;
     private RequestQueue mQueue;
     dbAdapter helper;
     private static final int REQ_START_STANDALONE_PLAYER = 1;
@@ -54,7 +41,6 @@ public class menu extends AppCompatActivity {
         this.token = viewdata();
         mQueue = Volley.newRequestQueue(this);
         initializeComponents();
-
     }
 
     public void Salir(View v) {
@@ -63,11 +49,13 @@ public class menu extends AppCompatActivity {
         System.exit(0);
     }
 
+    //Se carga la informacion de la bateria del dispositivo sensor IoT (Alfombra inteligente)
     public void initializeComponents(){
         final ProgressBar bateria = (ProgressBar) findViewById(R.id.progressBar2);
         final ProgressBar bateria_circulo = (ProgressBar) findViewById(R.id.progressBar3);
         final TextView porcentaje = findViewById(R.id.porcentaje_bateria);
         ///////////////////////////////////////////////////////
+        //Se obtiene la informacion de la bateria del dispositivo 7 de la API Django
         String url1 = " https://amstdb.herokuapp.com/db/dispositivo/7";
 
         JsonObjectRequest request = new JsonObjectRequest(
@@ -80,14 +68,11 @@ public class menu extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
 
                         try {
-
-                            final ArrayList<Category> lista_tanques = new ArrayList<>();
+                            //Se obtiene nivel de bateria y se presenta informacion en la pantalla en caso de exito
                             String nivel_bateria = response.getString("bateria");
                             bateria_circulo.setProgress(Integer.parseInt(nivel_bateria));
                             bateria.setProgress(Integer.parseInt(nivel_bateria));
                             porcentaje.setText(nivel_bateria+"%");
-
-
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -103,12 +88,12 @@ public class menu extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Authorization", "JWT " + token);
-                //System.out.println(token);
                 return params;
             }
         };
         mQueue.add(request);
 
+        //Se mantiene actualizada el porcentaje de la bateria cada 3 segundos
         final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
@@ -118,7 +103,6 @@ public class menu extends AppCompatActivity {
         };
         handler.postDelayed(runnable, 3000);
 
-
         ///////////////////////////////////////////////////////
 
     }
@@ -126,7 +110,6 @@ public class menu extends AppCompatActivity {
     public String viewdata()
     {
         String data = helper.getData();
-        //System.out.println("!!!!!!!AQUI DEBERIA ESTAR EL TOKEEEEEEEEN" +data);
         return data;
     }
 
@@ -144,12 +127,12 @@ public class menu extends AppCompatActivity {
         startActivity(ventana);
     }
 
+    //Se presenta video de Youtube sobre el aplicativo movil - VIDEO_ID = "vdGGdPUUSXw"
     public void ver_info(View v) {
         String YOUTUBE_API_KEY = "AIzaSyDWrCvV7CajCVZorPkVkRHC5ijN6IZF4Uw";
         final String VIDEO_ID = "vdGGdPUUSXw";
-        Intent intent = null;
         boolean autoplay = true;
-        intent = YouTubeStandalonePlayer.createVideoIntent(this, YOUTUBE_API_KEY, VIDEO_ID, 0, autoplay, true);
+        Intent intent = YouTubeStandalonePlayer.createVideoIntent(this, YOUTUBE_API_KEY, VIDEO_ID, 0, autoplay, true);
         if (intent != null) {
             if (canResolveIntent(intent)) {
                 startActivityForResult(intent, REQ_START_STANDALONE_PLAYER);
@@ -169,7 +152,6 @@ public class menu extends AppCompatActivity {
             if (errorReason.isUserRecoverableError()) {
                 errorReason.getErrorDialog(this, 0).show();
             } else {
-
                 Toast.makeText(this, "NO CONEXION", Toast.LENGTH_LONG).show();
             }
         }

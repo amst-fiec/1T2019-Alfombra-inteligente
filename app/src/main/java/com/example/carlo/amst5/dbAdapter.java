@@ -6,8 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-
 public class dbAdapter {
+
     myDbHelper myhelper;
     public dbAdapter(Context context)
     {
@@ -33,8 +33,6 @@ public class dbAdapter {
         {
             int cid =cursor.getInt(cursor.getColumnIndex(myDbHelper.UID));
             String name =cursor.getString(cursor.getColumnIndex(myDbHelper.NAME));
-
-            System.out.println(cid + "*** DESPUES DE ESTO YA DEBERIA SALIR EL TOKEN"+name);
             buffer.append(name);
         }
         return buffer.toString();
@@ -80,20 +78,15 @@ public class dbAdapter {
 
             try {
                 db.execSQL(CREATE_TABLE);
-            } catch (Exception e) {
-                //Message.message(context,""+e);
-            }
+            } catch (Exception e) {  }
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             try {
-                //Message.message(context,"OnUpgrade");
                 db.execSQL(DROP_TABLE);
                 onCreate(db);
-            }catch (Exception e) {
-                //Message.message(context,""+e);
-            }
+            }catch (Exception e) {  }
         }
     }
 }

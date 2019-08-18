@@ -2,15 +2,12 @@ package com.example.carlo.amst5;
 
 import android.graphics.drawable.Drawable;
 
+//Representa a cada tanque ID - ESTADO - FECHA DE ULTIMA ACTUALIZACION - IMAGEN
 public class Category {
 
     private String categoryId;
     private String title,estado,fecha;
     private Drawable imagen;
-
-    public Category() {
-        super();
-    }
 
     public Category( String estado, String fecha, String tanque, Drawable imagen) {
         super();
@@ -18,9 +15,7 @@ public class Category {
         this.estado = estado;
         this.fecha=fecha;
         this.imagen = imagen;
-
     }
-
 
     public String getTitle() {
         return title;

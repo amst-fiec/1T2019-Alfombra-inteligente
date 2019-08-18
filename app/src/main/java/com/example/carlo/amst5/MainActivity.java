@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
-import org.json.JSONException;
 import org.json.JSONObject;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,28 +15,29 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.iid.FirebaseInstanceId;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
+
     private RequestQueue mQueue;
     private String token = null;
     dbAdapter helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mQueue = Volley.newRequestQueue(this);
-        //this.deleteDatabase("db");
         helper = new dbAdapter(this);
         String data = helper.getData();
         System.out.println(FirebaseInstanceId.getInstance().getToken());
         if (data.length()!=0){
             saltarSesion(data);
         }
-
     }
+
+    //Se recolecta la informacion ingresada y se valida la info con el metodo iniciarSesion
     public void irMenuPrincipal(View v){
         final EditText usuario = (EditText) findViewById(R.id.tx_usuario);
         final EditText password = (EditText) findViewById(R.id.tx_pass);
@@ -48,18 +47,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saltarSesion(String data){
-        Intent menuPrincipal = new
-                Intent(getBaseContext(), menu.class);
+        Intent menuPrincipal = new Intent(getBaseContext(), menu.class);
         menuPrincipal.putExtra("token", data);
         startActivity(menuPrincipal);
-
     }
+
     private void iniciarSesion(String usuario, String password){
         Map<String, String> params = new HashMap();
         params.put("username", usuario);
         params.put("password", password);
         JSONObject parametros = new JSONObject(params);
         String login_url = "https://amstdb.herokuapp.com/db/nuevo-jwt";
+
+        //Se trata de obtener un token a traves de la API de Django
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST, login_url, parametros,
                 new Response.Listener<JSONObject>() {
@@ -67,13 +67,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         System.out.println(response);
                         try {
+                            //En caso de validacion correcta se obtiene el token y se ingresa a la ventana principal
                             token = response.getString("token");
-                            Intent menuPrincipal = new
-                                    Intent(getBaseContext(), menu.class);
-                            long id = helper.insertData(token);
-                            String data = helper.getData();
-                            System.out.println(data);
-                            System.out.println(id + "RESULTADO DE ANADIIIIIIIIIIIIIIIIIIIIIIIR");
+                            Intent menuPrincipal = new Intent(getBaseContext(), menu.class);
                             menuPrincipal.putExtra("token", token);
                             startActivity(menuPrincipal);
                         } catch (Exception e) {
